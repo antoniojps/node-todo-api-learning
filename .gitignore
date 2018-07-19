@@ -9,3 +9,4 @@ npm-debug.log
 yarn-error.log
 .vscode/
 .DS_Store
+server/config/config.json
