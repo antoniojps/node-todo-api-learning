@@ -21,20 +21,28 @@ const defaultUsers = [
   {
     _id: userTwoID,
     email: 'userTwo@mail.com',
-    password: 'userTwoPass'
+    password: 'userTwoPass',
+    tokens: [
+      {
+        access: 'auth',
+        token: jwt.sign({ _id: userTwoID, access: 'auth' }, 'secret').toString()
+      }
+    ]
   }
 ]
 
 const defaultTodos = [
   {
     _id: new ObjectID(),
-    text: 'First test todo'
+    text: 'First test todo',
+    _creator: userOneID
   },
   {
     _id: new ObjectID(),
     text: 'Second test todo',
     completed: true,
-    completedAt: 333
+    completedAt: 333,
+    _creator: userTwoID
   }
 ]
 

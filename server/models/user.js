@@ -63,6 +63,17 @@ UserSchema.methods = {
     user.tokens = user.tokens.concat([{ access, token }])
 
     return user.save().then(() => token)
+  },
+
+  removeToken(token) {
+    const user = this
+    return user.update({
+      $pull: {
+        tokens: {
+          token
+        }
+      }
+    })
   }
 }
 
@@ -83,6 +94,16 @@ UserSchema.statics = {
       'tokens.token': token,
       'tokens.access': 'auth'
     })
+  },
+
+  findByCredentials(email,password) {
+    return User.findOne({ email })
+      .then(async (user) => {
+        if (!user) return Promise.reject(new Error('user invalid'))
+        const isPasswordCorrect = await bcrypt.compare(password,user.password)
+        if (!isPasswordCorrect) return Promise.reject(new Error('user password incorrect'))
+        return user
+      })
   }
 }
 
